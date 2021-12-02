@@ -185,7 +185,23 @@ def get_dataset(
     else:
         return _dataset(args.train_data_file, args.train_ref_file)
 
+def truncate_seq_pair(tokens_a, tokens_b, max_num_tokens):
+    """Truncates a pair of sequences to a maximum sequence length. Lifted from Google's BERT repo."""
+    while True:
+        total_length = len(tokens_a) + len(tokens_b)
+        if total_length <= max_num_tokens:
+            break
 
+        trunc_tokens = tokens_a if len(tokens_a) > len(tokens_b) else tokens_b
+        assert len(trunc_tokens) >= 1
+
+        # We want to sometimes truncate from the front and sometimes from the
+        # back to add more randomness and avoid biases.
+        if random() < 0.5:
+            del trunc_tokens[0]
+        else:
+            trunc_tokens.pop()
+            
 def main():
     # See all possible arguments in src/transformers/training_args.py
     # or by passing the --help flag to this script.
