@@ -504,6 +504,9 @@ class TextDatasetForNextSentencePrediction(Dataset):
                         is_random_next = False
                         for j in range(a_end, len(current_chunk)):
                             tokens_b.extend(current_chunk[j])
+                            
+                    truncate_seq_pair(tokens_a, tokens_b, max_num_tokens)
+
 
                     assert len(tokens_a) >= 1
                     assert len(tokens_b) >= 1
