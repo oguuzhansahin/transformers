@@ -37,6 +37,23 @@ DEPRECATION_WARNING = (
     "library. You can have a look at this example script for pointers: {0}"
 )
 
+def truncate_seq_pair(tokens_a, tokens_b, max_num_tokens):
+    """Truncates a pair of sequences to a maximum sequence length. Lifted from Google's BERT repo."""
+    while True:
+        total_length = len(tokens_a) + len(tokens_b)
+        if total_length <= max_num_tokens:
+            break
+
+        trunc_tokens = tokens_a if len(tokens_a) > len(tokens_b) else tokens_b
+        assert len(trunc_tokens) >= 1
+
+        # We want to sometimes truncate from the front and sometimes from the
+        # back to add more randomness and avoid biases.
+        if random() < 0.5:
+            del trunc_tokens[0]
+        else:
+            trunc_tokens.pop()
+
 
 class TextDataset(Dataset):
     """
